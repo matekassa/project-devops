@@ -1,7 +1,11 @@
 pipeline {
-    agent { dockerfile true }
+    agent {
+        docker {
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     
-
     environment {
         GITHUB_REPOSITORY = 'https://github.com/matekassa/project-devops.git'
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
