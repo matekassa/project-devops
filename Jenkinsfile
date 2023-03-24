@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent { dockerfile true }
+    
 
     environment {
         GITHUB_REPOSITORY = 'https://github.com/matekassa/project-devops.git'
@@ -43,5 +39,6 @@ pipeline {
             //}
         //}
 
+        }
     }
 }
