@@ -1,12 +1,12 @@
 pipeline {
-    
+
     agent any
     
     environment {
         GITHUB_REPOSITORY = 'https://github.com/matekassa/project-devops.git'
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
         DOCKER_REGISTRY_CREDENTIALS = 'jenkins-docker'
-        DOCKER_IMAGE = 'https://hub.docker.com/r/matekassa/hello-flask-app'
+        DOCKER_IMAGE = 'matekassa/hello-flask-app'
         //SERVER_IP = 'your-server-ip'
         //SERVER_SSH_CREDENTIALS = 'server-ssh-credentials'
         //CONTAINER_NAME = 'hello-flask-app'
@@ -14,21 +14,23 @@ pipeline {
 
     stages {
 
-        stage("Build the docker image from the Dockerfile and push the docker image to Docker Hub registry") { 
-            // git branch: 'master', url: "${GITHUB_REPOSITORY}"
-            when {
-                branch 'master'
+        stage('Checkout the branch') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: "${GITHUB_REPOSITORY}"]]])
             }
+        }
+        
+        stage('Build the docker image from the Dockerfile and push the docker image to Docker Hub registry') {
             steps {
                 script {
-                    def dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+                    def dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}", "-f hello-flask-app/Dockerfile .")
                     docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIALS}") {
                         dockerImage.push()
                         dockerImage.push('latest') 
                     }
                 }
-
             }
+        }
 
         //stage("Deploy the application to the server from the registry of the pushed image") {
 
