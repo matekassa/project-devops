@@ -23,7 +23,7 @@ pipeline {
         stage('Build the docker image from the Dockerfile and push the docker image to Docker Hub registry') {
             steps {
                 script {
-                    def dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}", "-f hello-flask-app/Dockerfile .")
+                    def dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}", "-f hello-flask-app/Dockerfile ./hello-flask-app/.")
                     docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIALS}") {
                         dockerImage.push()
                         dockerImage.push('latest') 

@@ -5,7 +5,7 @@ FROM python:3-alpine
 WORKDIR /app
 
 # Copy the contents of the app directory to /app in the container
-COPY app/ /app
+COPY app/ .
 
 # Install the required packages
 RUN pip3 install -r requirements.txt
