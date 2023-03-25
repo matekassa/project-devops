@@ -1,1 +1,5 @@
 debian*
+.vagrant
+data
+mariadb
+registry-data
