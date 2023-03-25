@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  db:
+    container_name: mariadb-server
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MYSQL_USER: "udemx"
+      MYSQL_PASSWORD: "udemx"
+    volumes: 
+      - "./mariadb/data:/var/lib/mysql/data/"
+      - "./mariadb/logs:/var/lib/mysql/logs/"
+    networks:
+      - maria-db
+
+  phpmyadmin:
+    container_name: php-myadmin
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+     - maria-db
+
+  web-server:
+    container_name: apache-httpd-server
+    image: httpd:latest
+    restart: always
+    volumes:
+      - ./data/web-server:/usr/local/apache2/htdocs/
+    ports:
+      - "80:80"
+
+networks:
+  maria-db:
