@@ -35,6 +35,7 @@ pipeline {
         stage("Deploy the application to the server from the registry of the pushed image") {
 
             steps {
+                sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'docker pull ${DOCKER_IMAGE}:latest'"
                 sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker run -d -p 80:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"                
             }
         }
