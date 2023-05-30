@@ -5,10 +5,10 @@
     - name: Add the user 'debian' with a bash shell, appending the group 'sudo'
       ansible.builtin.user:
         name: debian
-        password: 
+        password: ""
         shell: /bin/bash
         groups: sudo
-        append: yes
+        append: true
         create_home: true
         home: /opt/debian
 
@@ -19,16 +19,16 @@
   tasks:
     - name: "Update cache & Full system update"
       apt:
-      update_cache: true
-      upgrade: dist
-      cache_valid_time: 3600
-      force_apt_get: true
-    - name: Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+        update_cache: true
+        upgrade: dist
+        cache_valid_time: 3600
+        force_apt_get: true
+    - name: Update the repository cache and update package "nginx" to 
+        latest version using default release squeeze-backport
       ansible.builtin.apt:
         name: nginx
         state: latest
-        default_release: squeeze-backports
-        update_cache: yes
+        update_cache: true
     - name: Install latest version of "openjdk-11-jdk" ignoring "install-recommends"
       ansible.builtin.apt:
         name: openjdk-11-jdk
@@ -37,9 +37,9 @@
     - name: Update apt cache and make sure maria-db, curl, htop, midnight commander, fail2ban, git, apt-transport-https, ca-certificates, lsb-release, gnupg are installed
       ansible.builtin.apt:
         name: "{{ item }}"
-        update_cache: yes
+        update_cache: true
       loop:
-        - maria-db
+        - mariadb-server
         - curl
         - htop
         - mc
