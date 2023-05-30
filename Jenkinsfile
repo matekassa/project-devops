@@ -35,8 +35,7 @@ pipeline {
         stage("Deploy the application to the server from the registry of the pushed image") {
 
             steps {
-                sshagent(credentials: ["${SERVER_SSH_CREDENTIALS}"]) {
-                    sh "cd ./vagrant-ansible/Vagrant vagrant ssh -o StrictHostKeyChecking=no -l root ${SERVER_IP} -c 'sudo docker run -d -p 80:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
+                    sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker run -d -p 80:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
                 }
             }
         }
