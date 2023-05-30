@@ -36,7 +36,7 @@ pipeline {
 
             steps {
                 sshagent(credentials: ["${SERVER_SSH_CREDENTIALS}"]) {
-                    sh "vagrant ssh -c 'sudo docker run -d -p 5000:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest' ${SERVER_IP}"
+                    sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker run -d -p 5000:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest' ${SERVER_IP}"
                 }
             }
         }
