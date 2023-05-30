@@ -7,9 +7,9 @@ pipeline {
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
         DOCKER_REGISTRY_CREDENTIALS = 'jenkins-docker'
         DOCKER_IMAGE = 'matekassa/hello-flask-app'
-        //SERVER_IP = 'your-server-ip'
-        //SERVER_SSH_CREDENTIALS = 'server-ssh-credentials'
-        //CONTAINER_NAME = 'hello-flask-app'
+        SERVER_IP = '192.168.56.10'
+        SERVER_SSH_CREDENTIALS = 'server-ssh-credentials'
+        CONTAINER_NAME = 'hello-flask-app'
     }
 
     stages {
@@ -32,14 +32,14 @@ pipeline {
             }
         }
 
-        //stage("Deploy the application to the server from the registry of the pushed image") {
+        stage("Deploy the application to the server from the registry of the pushed image") {
 
-            //steps {
-                //sshagent(credentials: ["${SERVER_SSH_CREDENTIALS}"]) {
-                //sh "ssh -o StrictHostKeyChecking=no -l root ${SERVER_IP} 'docker pull ${DOCKER_IMAGE}:latest && docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME} || true && docker run -d -p 80:80 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
-                //}
-            //}
-        //}
+            steps {
+                sshagent(credentials: ["${SERVER_SSH_CREDENTIALS}"]) {
+                    sh "vagrant ssh -c 'sudo docker run -d -p 5000:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest' -i ${SERVER_IP}"
+                }
+            }
+        }
         
     }
 }
