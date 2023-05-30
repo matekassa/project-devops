@@ -3,3 +3,5 @@ debian*
 data
 mariadb
 registry-data
+.pylintrc
+.vscode
