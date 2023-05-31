@@ -32,12 +32,11 @@ pipeline {
             }
         }
 
-        stage("Deploy the application to the server from the registry of the pushed image") {
+        stage("Deploy the application to the server from the docker registry") {
 
             steps {
-                sh "cd ./vagrant-ansible/Vagrant vagrant up"
-                sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker rm ${CONTAINER_NAME}'"
-                sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"                
+                sh "vagrant ssh -c 'sudo docker rm ${CONTAINER_NAME}' -i ${SERVER_IP}"
+                sh "cd ./vagrant-ansible/Vagrant vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest' -i ${SERVER_IP}"                
             }
         }
         
