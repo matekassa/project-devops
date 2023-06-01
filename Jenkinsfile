@@ -10,7 +10,7 @@ pipeline {
         SERVER_IP = '192.168.56.10'
         SERVER_SSH_CREDENTIALS = 'server-ssh-credentials'
         CONTAINER_NAME = 'hello-flask-app'
-        CREDENTIALS_FILE = './credential.properties'
+        CREDENTIALS_FILE = 'credential-properties'
     }
 
     stages {
