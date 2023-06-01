@@ -34,8 +34,8 @@ pipeline {
 
         stage("Deploy the application to the server from the docker registry") {
             steps {
-                sh "cd ./vagrant-ansible/Vagrant && vagrant status && vagrant up --provider=virtualbox && vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'"
-                sh "cd ./vagrant-ansible/Vagrant && vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
+                sh "cd ./vagrant-ansible/Vagrant && sudo -u mate vagrant status && sudo -u mate vagrant up --provider=virtualbox && vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'"
+                sh "cd ./vagrant-ansible/Vagrant && sudo -u mate vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
             }
         }
         
