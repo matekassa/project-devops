@@ -5,3 +5,4 @@ mariadb
 registry-data
 .pylintrc
 .vscode
+credential.properties
