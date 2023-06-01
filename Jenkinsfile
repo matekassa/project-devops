@@ -39,10 +39,7 @@ pipeline {
                     def credentials = readProperties file: env.CREDENTIALS_FILE
                     def username = credentials['username']
                     def password = credentials['password']
-                    withCredentials([
-                        string(credentialsId: 'username', variable: 'USERNAME'),
-                        string(credentialsId: 'password', variable: 'PASSWORD')
-                    ]) {
+                    withCredentials([file(credentialsId: 'credential-properties', variable: 'CREDENTIAL_FILE')]) {
                         sh """
                         cd ./vagrant-ansible/Vagrant
                         echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant status
