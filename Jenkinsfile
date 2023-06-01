@@ -42,10 +42,10 @@ pipeline {
                     withCredentials([file(credentialsId: 'credential-properties', variable: 'CREDENTIAL_FILE')]) {
                         sh """
                         cd ./vagrant-ansible/Vagrant
-                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant status
-                        expect vagrant_up.exp ${USERNAME} ${PASSWORD}
-                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'
-                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'
+                        echo ${password} | sudo -S -u ${username} vagrant status
+                        expect vagrant_up.exp ${username} ${password}
+                        echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'
+                        echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'
                         """
                     }
                 }
