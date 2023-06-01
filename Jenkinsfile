@@ -10,6 +10,7 @@ pipeline {
         SERVER_IP = '192.168.56.10'
         SERVER_SSH_CREDENTIALS = 'server-ssh-credentials'
         CONTAINER_NAME = 'hello-flask-app'
+        CREDENTIALS_FILE = './credential.properties'
     }
 
     stages {
@@ -34,8 +35,11 @@ pipeline {
 
         stage("Deploy the application to the server from the docker registry") {
             steps {
-                sh "cd ./vagrant-ansible/Vagrant && sudo -u mate vagrant status && sudo -u mate vagrant up --provider=virtualbox && vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'"
-                sh "cd ./vagrant-ansible/Vagrant && sudo -u mate vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
+                def credentials = readProperties file: env.CREDENTIALS_FILE
+                def username = credentials['username']
+                def password = credentials['password']
+                sh "cd ./vagrant-ansible/Vagrant && echo ${password} | sudo -S -u ${username} vagrant status && expect vagrant_up.exp ${username} ${password} --provider=virtualbox && echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'"
+                sh "cd ./vagrant-ansible/Vagrant && echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
             }
         }
         
