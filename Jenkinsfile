@@ -44,7 +44,6 @@ pipeline {
                         cd ./vagrant-ansible/Vagrant
                         sudo vagrant status
                         sudo vagrant up
-                        expect vagrant_up.exp ${username} ${password}
                         vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'
                         vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'
                         """
