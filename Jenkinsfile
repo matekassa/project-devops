@@ -35,13 +35,26 @@ pipeline {
 
         stage("Deploy the application to the server from the docker registry") {
             steps {
-                def credentials = readProperties file: env.CREDENTIALS_FILE
-                def username = credentials['username']
-                def password = credentials['password']
-                sh "cd ./vagrant-ansible/Vagrant && echo ${password} | sudo -S -u ${username} vagrant status && expect vagrant_up.exp ${username} ${password} --provider=virtualbox && echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'"
-                sh "cd ./vagrant-ansible/Vagrant && echo ${password} | sudo -S -u ${username} vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'"
+                script {
+                    def credentials = readProperties file: env.CREDENTIALS_FILE
+                    def username = credentials['username']
+                    def password = credentials['password']
+                    withCredentials([
+                        string(credentialsId: 'username', variable: 'USERNAME'),
+                        string(credentialsId: 'password', variable: 'PASSWORD')
+                    ]) {
+                        sh """
+                        cd ./vagrant-ansible/Vagrant
+                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant status
+                        expect vagrant_up.exp ${USERNAME} ${PASSWORD}
+                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant ssh -c 'sudo docker rm -f ${CONTAINER_NAME} || true'
+                        echo ${PASSWORD} | sudo -S -u ${USERNAME} vagrant ssh -c 'sudo docker run -d -p 85:5000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:latest'
+                        """
+                    }
+                }
             }
         }
+
         
     }
 }
