@@ -35,11 +35,11 @@ pipeline {
 
         stage("Deploy the application to the server from the docker registry") {
             steps {
-                script {
-                    def credentials = readProperties file: env.CREDENTIALS_FILE
-                    def username = credentials['username']
-                    def password = credentials['password']
-                    withCredentials([file(credentialsId: 'credential-properties', variable: 'CREDENTIAL_FILE')]) {
+                withCredentials([file(credentialsId: 'credential-properties', variable: 'CREDENTIAL_FILE')]) {
+                    script {
+                        def credentials = readProperties file: "${CREDENTIAL_FILE}"
+                        def username = credentials['username']
+                        def password = credentials['password']
                         sh """
                         cd ./vagrant-ansible/Vagrant
                         echo ${password} | sudo -S -u ${username} vagrant status
