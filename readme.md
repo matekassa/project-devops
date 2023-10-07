@@ -1,7 +1,7 @@
 # Devops Project
 
 ## Goal
-The goal is to create a debian-based server with manual and automatized installation and deploy the application on it with Jenkins CI-CD pipeline.
+The goal of this project is to create a debian-based virtual server with automatized dependency installation and deploy a containerized application on it by using Jenkins CI-CD pipeline.
 
 ![img.png](images/ci-cd-hello-flask-app.png)
 
